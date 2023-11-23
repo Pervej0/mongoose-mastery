@@ -48,8 +48,12 @@ userSchema.pre("save", async function (next) {
     user.password,
     Number(config.bcrypt_saltRounds)
   );
-  console.log(user.password);
+
   next();
 });
+
+// userSchema.post("save", async function (doc, next) {
+//   next();
+// });
 
 export const User = model<TUser>("User", userSchema);
