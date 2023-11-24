@@ -1,6 +1,5 @@
 import Joi from "joi";
 
-// Joi schema for TFullName
 const fullNameSchema = Joi.object({
   firstName: Joi.string().required().messages({
     "any.required": "First Name is required",
@@ -12,7 +11,6 @@ const fullNameSchema = Joi.object({
   }),
 });
 
-// Joi schema for TAddress
 const addressSchema = Joi.object({
   street: Joi.string().required().messages({
     "any.required": "Street is required",
@@ -28,22 +26,36 @@ const addressSchema = Joi.object({
   }),
 });
 
-// Joi schema for TUser
-const joiUser = Joi.object({
-  userId: Joi.string().required().messages({
-    "any.required": "User ID is required",
-    "string.base": "User ID must be a string",
+export const orderSchema = Joi.object({
+  productName: Joi.string().required().messages({
+    "any.required": "ProductName is required",
+    "string.base": "ProductName must be a string",
   }),
-  userName: Joi.string().required().messages({
-    "any.required": "User Name is required",
-    "string.base": "User Name must be a string",
+  price: Joi.number().required().messages({
+    "any.required": "Price is required",
+    "number.base": "Price must be a number",
+  }),
+  quantity: Joi.number().required().messages({
+    "any.required": "Quantity is required",
+    "number.base": "Quantity must be a number",
+  }),
+});
+
+const joiUser = Joi.object({
+  userId: Joi.number().required().messages({
+    "any.required": "UserId is required",
+    "number.base": "UserId must be a number",
+  }),
+  username: Joi.string().required().messages({
+    "any.required": "Username is required",
+    "string.base": "Username must be a string",
   }),
   password: Joi.string().required().messages({
     "any.required": "Password is required",
     "string.base": "Password must be a string",
   }),
   fullName: fullNameSchema.required().messages({
-    "any.required": "Full Name is required",
+    "any.required": "FullName is required",
   }),
   age: Joi.number().required().messages({
     "any.required": "Age is required",
@@ -51,26 +63,20 @@ const joiUser = Joi.object({
   }),
   email: Joi.string().required().email().messages({
     "any.required": "Email is required",
-    "string.email": "Invalid email format",
+    "string.email": "Email must be a valid email address",
   }),
-  isActive: Joi.boolean().default(true),
-  hobbies: Joi.array().items(Joi.string()),
+  isActive: Joi.boolean().default(true).messages({
+    "boolean.base": "IsActive must be a boolean",
+  }),
+  hobbies: Joi.array().items(Joi.string()).messages({
+    "array.base": "Hobbies must be an array",
+  }),
   address: addressSchema.required().messages({
     "any.required": "Address is required",
   }),
+  orders: Joi.array().items(orderSchema).messages({
+    "array.base": "Orders must be an array",
+  }),
 });
-
-// // Example usage
-// const JoiUser = {
-//   userId: "123",
-//   userName: "john_doe",
-//   password: "password123",
-//   fullName: { firstName: "John", lastName: "Doe" },
-//   age: 25,
-//   email: "john.doe@example.com",
-//   isActive: true,
-//   hobbies: ["reading", "coding"],
-//   address: { street: "123 Main St", city: "Cityville", country: "Countryland" },
-// };
 
 export default joiUser;

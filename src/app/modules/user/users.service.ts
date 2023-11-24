@@ -1,5 +1,5 @@
 import { User } from "../users.model";
-import { TUser } from "./users.interface";
+import { TOrder, TUser } from "./users.interface";
 
 export const SaveAUserDB = async (data: TUser) => {
   const result = await User.create(data);
@@ -7,7 +7,16 @@ export const SaveAUserDB = async (data: TUser) => {
 };
 
 export const GetAllUsersDB = async () => {
-  const result = await User.find({});
+  const result = await User.find(
+    {},
+    {
+      username: 1,
+      fullName: 1,
+      age: 1,
+      email: 1,
+      address: 1,
+    }
+  );
   return result;
 };
 
@@ -26,5 +35,35 @@ export const UpdateSingleUserDB = async (userId: string, udatedData: TUser) => {
 export const DeleteSingleUesrDB = async (userId: string) => {
   const filter = { userId };
   const result = await User.deleteOne(filter);
+  return result;
+};
+
+// orders business logic
+export const UpdateOrdersDB = async (userId: string, order: TOrder) => {
+  const filter = { userId };
+  const result = await User.updateOne(filter, { $push: { orders: order } });
+  return result;
+};
+
+export const GetAllOrdersDB = async (userId: string) => {
+  const result = await User.findOne({ userId }, { orders: 1 });
+  return result;
+};
+
+export const GetTotalOrderPriceDB = async (userId: string) => {
+  const result = await User.aggregate([
+    { $match: { userId: userId } },
+    { $unwind: "$orders" },
+    {
+      $group: {
+        _id: "$orders.productName",
+        totallAmount: {
+          $sum: { $multiply: ["$orders.price", "$orders.quantity"] },
+        },
+      },
+    },
+    { $group: { _id: null, totallPrice: { $sum: "$totallAmount" } } },
+  ]);
+  console.log(result, "fffffffff");
   return result;
 };

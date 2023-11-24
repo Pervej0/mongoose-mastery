@@ -10,8 +10,8 @@ export type TAddress = {
 };
 
 export type TUser = {
-  userId: string;
-  userName: string;
+  userId: number;
+  username: string;
   password: string;
   fullName: TFullName;
   age: number;
@@ -19,6 +19,7 @@ export type TUser = {
   isActive: boolean;
   hobbies: string[];
   address: TAddress;
+  orders: TOrder[];
 };
 
 export type TOrder = {
