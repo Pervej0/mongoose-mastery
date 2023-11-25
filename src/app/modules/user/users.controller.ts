@@ -209,7 +209,6 @@ export const GetTotalOrderPrice = async (req: Request, res: Response) => {
       data: query,
     });
   } catch (error) {
-    console.log(error, "ddddd");
     res.status(500).json({
       success: false,
       message: "Something went wrong!",
