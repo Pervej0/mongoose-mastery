@@ -108,7 +108,8 @@ export const DeleteSingleUser = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: "User deleted successfully!",
-      data: query,
+      data: null,
+      result: query,
     });
   } catch (error) {
     res.status(500).json({
@@ -123,7 +124,7 @@ export const DeleteSingleUser = async (req: Request, res: Response) => {
 export const UpdateOrders = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
-    const ordersData = req.body;
+    const ordersData = req.body.orders;
     const validOrdersData = await orderSchema.validateAsync(ordersData);
     const query = await UpdateOrdersDB(userId, validOrdersData);
     if (query.modifiedCount === 0) {
@@ -135,13 +136,13 @@ export const UpdateOrders = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: "Order created successfully!",
-      result: query,
       data: null,
+      result: query,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Something went wrong!",
+      message: "Something went wrong!ddddddddddd",
       error: error,
     });
   }
