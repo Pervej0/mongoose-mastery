@@ -151,6 +151,12 @@ export const GetAllOrders = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
     const query = await GetAllOrdersDB(userId);
+    if (query === null) {
+      res.json({
+        message: "User doesn't exist!",
+      });
+      return;
+    }
     res.status(200).json({
       success: true,
       message: "Order fetched successfully!",
@@ -169,7 +175,11 @@ export const GetTotalOrderPrice = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
     const query = await GetTotalOrderPriceDB(userId);
-    console.log(query, "333");
+    console.log(query, "xxxx");
+    // if (!query) {
+    //   res.json({ message: "You have no products to order" });
+    // }
+    // const totalPrice = query.totalPrice as string;
     res.status(200).json({
       success: true,
       message: "Total price calculated successfully!",

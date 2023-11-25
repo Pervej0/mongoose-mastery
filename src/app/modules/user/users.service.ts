@@ -62,8 +62,7 @@ export const GetTotalOrderPriceDB = async (userId: string) => {
         },
       },
     },
-    { $group: { _id: null, totallPrice: { $sum: "$totallAmount" } } },
+    { $group: { _id: null, totalPrice: { $sum: "$totallAmount" } } },
   ]);
-  console.log(result, "fffffffff");
   return result;
 };
