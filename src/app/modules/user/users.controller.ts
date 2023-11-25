@@ -75,7 +75,12 @@ export const UpdateSingleUser = async (req: Request, res: Response) => {
     delete updatedData.password;
     if (query.modifiedCount === 0) {
       res.json({
-        message: "User dose not exist!",
+        success: false,
+        message: "User not found",
+        error: {
+          code: 404,
+          description: "User not found!",
+        },
       });
       return;
     }
@@ -124,12 +129,17 @@ export const DeleteSingleUser = async (req: Request, res: Response) => {
 export const UpdateOrders = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
-    const ordersData = req.body.orders;
+    const ordersData = req.body;
     const validOrdersData = await orderSchema.validateAsync(ordersData);
     const query = await UpdateOrdersDB(userId, validOrdersData);
     if (query.modifiedCount === 0) {
       res.json({
-        message: "User dose not exist!",
+        success: false,
+        message: "User not found",
+        error: {
+          code: 404,
+          description: "User not found!",
+        },
       });
       return;
     }
@@ -142,7 +152,7 @@ export const UpdateOrders = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Something went wrong!ddddddddddd",
+      message: "Something went wrong!",
       error: error,
     });
   }
@@ -154,7 +164,12 @@ export const GetAllOrders = async (req: Request, res: Response) => {
     const query = await GetAllOrdersDB(userId);
     if (query === null) {
       res.json({
-        message: "User doesn't exist!",
+        success: false,
+        message: "User not found",
+        error: {
+          code: 404,
+          description: "User not found!",
+        },
       });
       return;
     }
@@ -174,19 +189,27 @@ export const GetAllOrders = async (req: Request, res: Response) => {
 
 export const GetTotalOrderPrice = async (req: Request, res: Response) => {
   try {
-    const userId = req.params.userId;
+    const userId = Number(req.params.userId);
     const query = await GetTotalOrderPriceDB(userId);
-    console.log(query, "xxxx");
-    // if (!query) {
-    //   res.json({ message: "You have no products to order" });
-    // }
-    // const totalPrice = query.totalPrice as string;
+    if (!query) {
+      res.json({
+        success: false,
+        message: "User not found",
+        error: {
+          code: 404,
+          description: "User not found!",
+        },
+      });
+      return;
+    }
+
     res.status(200).json({
       success: true,
       message: "Total price calculated successfully!",
       data: query,
     });
   } catch (error) {
+    console.log(error, "ddddd");
     res.status(500).json({
       success: false,
       message: "Something went wrong!",

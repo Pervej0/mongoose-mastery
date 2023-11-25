@@ -11,7 +11,6 @@ import {
 } from "./users.controller";
 const router = express.Router();
 
-console.log("route");
 // user routes
 router.post("/", SaveAUser);
 router.get("/", GetAllUsers);

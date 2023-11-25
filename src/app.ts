@@ -7,7 +7,6 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-console.log("app");
 // routers
 app.use("/api/users", usersRoute);
 
