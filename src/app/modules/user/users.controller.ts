@@ -136,13 +136,13 @@ export const UpdateOrders = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: "Order created successfully!",
-      result: query,
       data: null,
+      result: query,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Something went wrong!",
+      message: "Something went wrong!ddddddddddd",
       error: error,
     });
   }

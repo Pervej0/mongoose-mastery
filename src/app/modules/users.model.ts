@@ -60,11 +60,13 @@ userSchema.pre("save", async function (next) {
 
 userSchema.pre("updateOne", async function (next) {
   const user = this.getUpdate() as TUser;
-  user.password = await bcrypt.hash(
-    user.password,
-    Number(config.bcrypt_saltRounds)
-  );
-  next();
+  if (user.username) {
+    user.password = await bcrypt.hash(
+      user.password,
+      Number(config.bcrypt_saltRounds)
+    );
+    next();
+  }
 });
 
 userSchema.set("toJSON", {
