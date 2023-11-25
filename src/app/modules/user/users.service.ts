@@ -56,14 +56,24 @@ export const GetTotalOrderPriceDB = async (userId: string) => {
     { $unwind: "$orders" },
     {
       $group: {
-        _id: "$orders.productName",
-        totallAmount: {
-          $sum: { $multiply: ["$orders.price", "$orders.quantity"] },
+        _id: null,
+        totalPrice: {
+          $sum: {
+            $reduce: {
+              input: "$orders",
+              initialValue: 0,
+              in: {
+                $add: [
+                  "$$value",
+                  { $multiply: ["$$this.price", "this.quantity"] },
+                ],
+              },
+            },
+          },
         },
       },
     },
-    { $group: { _id: null, totallPrice: { $sum: "$totallAmount" } } },
   ]);
-  console.log(result, "fffffffff");
+  console.log(result, "fffffffffff");
   return result;
 };
