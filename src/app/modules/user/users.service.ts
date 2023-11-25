@@ -50,7 +50,23 @@ export const GetAllOrdersDB = async (userId: string) => {
   return result;
 };
 
-export const GetTotalOrderPriceDB = async (userId: string) => {
-  const result = await User.aggregate([{ $match: { userId } }]);
-  return result;
+export const GetTotalOrderPriceDB = async (id: string) => {
+  const matchedUser = await User.findOne({ userId: id });
+  // const result = await User.aggregate([
+  //   { $match: { userId: data } },
+  //   {
+  //     $unwind: "$orders",
+  //   },
+  //   {
+  //     $group: {
+  //       _id: "$orders.productName",
+  //       totalPrice: {
+  //         $sum: { $multiply: ["$orders.price", "$orders.quantity"] },
+  //       },
+  //     },
+  //   },
+  //   { $project: { userId: id, totalPrice: 1 } },
+  // ]);
+
+  return matchedUser;
 };

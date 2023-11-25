@@ -69,6 +69,24 @@ userSchema.pre("updateOne", async function (next) {
   }
 });
 
+// userSchema.pre("aggregate", async function (next) {
+//   this.pipeline().push(
+//     { $unwind: "$orders" },
+//     {
+//       $project: {
+//         totalPrice: {
+//           $reduce: {
+//             input: "$orders",
+//             initialValue: 0,
+//             in: { $sum: { $multiply: ["$price", "$quantity"] } },
+//           },
+//         },
+//       },
+//     }
+//   );
+//   next();
+// });
+
 userSchema.set("toJSON", {
   transform: function (doc, ret) {
     delete ret["password"];
